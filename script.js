@@ -40,7 +40,6 @@ productList.addEventListener("click", (e) => {
 
 // Render cart list
 function renderCart() {
-	saveCart()
 	cart.innerHTML = "";
 	for(const [id, product] of cartList){
 		 const li = document.createElement("li");
@@ -52,18 +51,21 @@ function renderCart() {
 // Add item to cart
 function addToCart(productId) {
 	cartList.set(productId, products[productId])
+	saveCart()
 	renderCart()
 }
 
 // Remove item from cart
 function removeFromCart(productId) {
 	cartList.delete(+productId)
+	saveCart()
 	renderCart()
 }
 
 // Clear cart
 function clearCart() {
 	cartList.clear()
+	saveCart()
 	renderCart()
 }
 
