@@ -24,12 +24,10 @@ function renderProducts() {
 const cart = document.getElementById("cart-list");
 const cartClearBtn = document.getElementById("clear-cart-btn");
 
-const restoreCart = JSON.parse(sessionStorage.getItem("cart") || "[]").map((item,index) => [index, item])
-const cartList = new Map(restoreCart)
+const cartList = JSON.parse(sessionStorage.getItem("cart") || "[]")
 
 const saveCart = () => {
-	const cartEntries  = [...cartList].map(li => li[1]);
-	sessionStorage.setItem("cart",JSON.stringify(cartEntries))
+	sessionStorage.setItem("cart",JSON.stringify(cartList))
 }
 
 cartClearBtn.addEventListener("click", clearCart)
@@ -37,34 +35,33 @@ productList.addEventListener("click", (e) => {
 	e.target.matches("button") && addToCart(e.target.dataset.id-1)
 });
 
-
 // Render cart list
 function renderCart() {
 	cart.innerHTML = "";
-	for(const [id, product] of cartList){
-		 const li = document.createElement("li");
-		li.innerHTML = `${product.name} - $${product.price} <button class="add-to-cart-btn" data-id="${id}" onclick="removeFromCart(${id})">Remove to Cart</button>`;
+	for(let i=0; i<cartList.length; i++){
+		const {name, price} = cartList[i];
+		const li = document.createElement("li");
+		li.innerHTML = `${name} - $${price} <button class="add-to-cart-btn" data-id="${i}" onclick="removeFromCart(${i})">Remove to Cart</button>`;
 		cart.appendChild(li)
 	}
 }
 
 // Add item to cart
 function addToCart(productId) {
-	cartList.set(productId, products[productId])
+	cartList.push(products[productId])
 	saveCart()
 	renderCart()
 }
-
 // Remove item from cart
 function removeFromCart(productId) {
-	cartList.delete(+productId)
+	cartList.splice(+productId,1)
 	saveCart()
 	renderCart()
 }
 
 // Clear cart
 function clearCart() {
-	cartList.clear()
+	cartList.length = 0
 	saveCart()
 	renderCart()
 }
