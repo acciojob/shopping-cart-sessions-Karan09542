@@ -24,12 +24,12 @@ function renderProducts() {
 const cart = document.getElementById("cart-list");
 const cartClearBtn = document.getElementById("clear-cart-btn");
 
-const restoreCart = JSON.parse(sessionStorage.getItem("productCart") || "[]")
+const restoreCart = JSON.parse(sessionStorage.getItem("cart") || "[]")
 const cartList = new Map(restoreCart)
 
 const saveCart = () => {
 	const cartEntries  = [...cartList];
-	sessionStorage.setItem("productCart",JSON.stringify(cartEntries ))
+	sessionStorage.setItem("cart",JSON.stringify(cartEntries ))
 }
 
 cartClearBtn.addEventListener("click", clearCart)
